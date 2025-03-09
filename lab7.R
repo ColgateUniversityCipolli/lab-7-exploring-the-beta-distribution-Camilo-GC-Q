@@ -90,14 +90,15 @@ kurtosis
 
 # Task 3
 
-sample.sum = function(alpha, beta){
+sample.histo = function(alpha, beta){
   set.seed(7272) # Set seed so we all get the same results.
   sample.size = 500 # Specify sample details
   beta.sample = rbeta(n = sample.size, # sample size
                        shape1 = alpha, # alpha parameter
-                       shape2 = beta)
+                       shape2 = beta) |>
+    as_tibble() |>
+    rename(x = value)
   
-  beta.sample = data.frame(x = beta.sample)
   dist = ggplot(data = beta.sample, aes(x = x)) +
     geom_histogram(aes(y = after_stat(density)), breaks = seq(0,1,0.1)) + 
     geom_density(color = "blue") + 
@@ -112,10 +113,51 @@ sample.sum = function(alpha, beta){
   return(dist)
     
 }
-sample.sum(2,5)
-sample.sum(5,5)
-sample.sum(5,2)
-sample.sum(0.5,0.5)
+
+
+plot1 = sample.histo(2,5)
+plot2 = sample.histo(5,5)
+plot3 = sample.histo(5,2)
+plot4 = sample.histo(0.5,0.5)
+
+(plot1 | plot2 / plot3 | plot4)
+
+compute.sample = function(alpha, beta){
+  set.seed(7272)
+  sample.size = 500
+  beta.sample = rbeta(n = sample.size, # sample size
+                      shape1 = alpha, # alpha parameter
+                      shape2 = beta) |>
+    as_tibble() |>
+    rename(x = value)
+  
+  summary.stats = beta.sample |>
+    summarize(
+      mean = mean(x),
+      variance = var(x),
+      skew = mean((x - mean(x))^3) / (var(x))^(2/3),
+      kurt = mean((x - mean(x))^4) / (var(x)^2) - 3
+    )
+  return(summary.stats)
+}
+
+sample.summary = bind_rows(
+  tibble(alpha = 2, beta = 5, compute.sample(2,5)),
+  tibble(alpha = 5, beta = 5, compute.sample(5,5)),
+  tibble(alpha = 5, beta = 2, compute.sample(5,2)),
+  tibble(alpha = 0.5, beta = 0.5, compute.sample(0.5,0.5))
+)
+
+view(sample.summary)
+
+# Task 4
+set.seed(7272)
+beta.sample = rbeta(500, 2, 5) |>
+  as_tibble() |>
+  rename(x = value)
+
+cum.stats = beta.sample
+
 
 
 
