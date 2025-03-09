@@ -156,12 +156,31 @@ beta.sample = rbeta(500, 2, 5) |>
   as_tibble() |>
   rename(x = value)
 
-cum.stats = beta.sample
+cum.stats = beta.sample |>
+  mutate(
+    n = row_number(),
+    cum.mean = cummean(x),
+    cum.var = cumvar(x),
+    cum.skew = cumskew(x),
+    cum.kurt = cumkurt(x)
+  )
 
+pl1 = ggplot(cum.stats, aes(x = n, y = cum.mean)) +
+  geom_line() +
+  geom_hline(yintercept = charac(2,5)$mean) +
+  theme_bw()
+pl2 = ggplot(cum.stats, aes(x = n, y = cum.var)) +
+  geom_line() +
+  geom_hline(yintercept = charac(2,5)$var) +
+  theme_bw()
+pl3 = ggplot(cum.stats, aes(x = n, y = cum.skew)) +
+  geom_line() +
+  geom_hline(yintercept = charac(2,5)$skew) +
+  theme_bw()
+pl4 = ggplot(cum.stats, aes(x = n, y = cum.kurt)) +
+  geom_line() +
+  geom_hline(yintercept = charac(2,5)$kurt) +
+  theme_bw()
 
+(pl1 | pl2) / (pl3 | pl4)
 
-
-
-         
-         
-         
