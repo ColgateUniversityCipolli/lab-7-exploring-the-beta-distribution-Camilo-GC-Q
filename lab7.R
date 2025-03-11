@@ -188,7 +188,7 @@ pl4 = ggplot(cum.stats, aes(x = n, y = cum.kurt)) +
 # Task 5
 
 sample = 500
-result = tibble(mean, variance, skew, kurt)
+result = tibble(mean = numeric(), variance = numeric(), skew = numeric(), kurt = numeric())
 
 for (i in 1:1000) {
   set.seed(7272+i)
@@ -202,3 +202,28 @@ for (i in 1:1000) {
 }
 
 mean.plot = ggplot(result, aes(x = mean)) +
+  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_density(color = "red") +
+  theme_bw() +
+  ggtitle("Histogram of Sample Means")
+
+var.plot = ggplot(result, aes(x = variance)) +
+  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_density(color = "red") +
+  theme_bw() +
+  ggtitle("Histogram of Sample Variances")
+
+skew.plot = ggplot(result, aes(x = skew)) + 
+  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_density(color = "red") +
+  theme_bw() +
+  ggtitle("Histogram of Sample Skewness")
+
+kurt.plot = ggplot(result, aes(x = kurt)) +
+  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_density(color = "red") +
+  theme_bw() +
+  ggtitle("Histogram of Sample Kurtosis")
+
+(mean.plot | var.plot) / (skew.plot | kurt.plot)
+  
