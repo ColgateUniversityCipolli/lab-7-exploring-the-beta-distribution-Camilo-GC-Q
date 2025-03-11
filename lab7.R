@@ -1,6 +1,7 @@
 library(tidyverse)
 library(cumstats)
 library(patchwork)
+library(stringr)
 
 # Task 1: Describe the Population Distribution
 
@@ -227,3 +228,25 @@ kurt.plot = ggplot(result, aes(x = kurt)) +
 
 (mean.plot | var.plot) / (skew.plot | kurt.plot)
   
+
+# Task 6
+
+data = read_csv("DeathData/Data.csv")
+view(data)
+data = data[-c(1:2), ]
+data = data |>
+  rename(`Country Name` = "Data Source", `DeathRate 2022` = "...3")
+
+
+data.clean = data |> 
+  select("Country Name", "2022") |>
+  rename(Country = "Country Name", Deaths.per.1000 = "2022") |>
+  filter(!is.na(Deaths.per.100))
+
+data.clean = data.clean |>
+  mutate(Death.rate = Deaths.per.100 / 1000)
+
+head(data.clean)
+
+
+
