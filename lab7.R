@@ -248,8 +248,8 @@ library(nleqslv)
 ###################
 # MOM
 ###################
-MOM.beta = function(data, alpha, beta){
-  alpha = part[1]
+MOM.beta = function(data, par){
+  alpha = par[1]
   beta = par[2]
   EX1 = alpha / (alpha + beta)
   m1 = mean(data)
@@ -259,25 +259,26 @@ MOM.beta = function(data, alpha, beta){
   return(c(EX1 - m1, EX2 - m2)) # Goal: find lambda so this is 0
 }
 
-nleqslv(x = 20, # guess
-        fn = MOM.pois,
+nleqslv(x = c(2,3), # guess
+        fn = MOM.beta,
         data=data$`Death Rate 2022`)
 
 ###################
 # MLE
 ###################
-llpois <- function(data, par, neg=FALSE){
-  lambda <- par[1]
-  loglik <- sum(log(dpois(x=data, lambda = lambda)))
+MLE.beta = function(data, par, neg=FALSE){
+  alpha = par[1]
+  beta = par[2]
+  loglik = sum(log(dbeta(x=data, alpha = alpha, beta = beta)))
   
   return(ifelse(neg, -loglik, loglik))
 }
-
-optim(par = 2,
-      fn = llpois,
-      data=dat.ms$Relapsein2y,
+help(optim)
+optim(par = c(2,5),
+      fn = MLE.beta,
+      data=data$`Death Rate 2022`,
       method = "Brent",
       lower = 0,
-      upper = 10,
+      upper = 1,
       neg = T)
 
