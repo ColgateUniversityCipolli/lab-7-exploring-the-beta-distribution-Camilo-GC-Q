@@ -184,3 +184,21 @@ pl4 = ggplot(cum.stats, aes(x = n, y = cum.kurt)) +
 
 (pl1 | pl2) / (pl3 | pl4)
 
+
+# Task 5
+
+sample = 500
+result = tibble(mean, variance, skew, kurt)
+
+for (i in 1:1000) {
+  set.seed(7272+i)
+  beta.sample = rbeta(sample, 2, 5)
+  mean = mean(beta.sample)
+  var = var(beta.sample)
+  skew = mean((beta.sample - mean)^3) / (var)^(3/2)
+  kurt = mean((beta.sample - mean)^4) / (var)^2 - 3
+  
+  result = bind_rows(result, tibble(mean = mean, variance = var, skew = skew, kurt = kurt))
+}
+
+mean.plot = ggplot(result, aes(x = mean)) +
