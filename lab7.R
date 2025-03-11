@@ -269,16 +269,16 @@ nleqslv(x = c(2,3), # guess
 MLE.beta = function(data, par, neg=FALSE){
   alpha = par[1]
   beta = par[2]
-  loglik = sum(log(dbeta(x=data, alpha = alpha, beta = beta)))
+  loglik = sum(log(dbeta(x=data, shape1 = alpha, shape2 = beta)))
   
   return(ifelse(neg, -loglik, loglik))
 }
-help(optim)
+# help(optim)
 optim(par = c(2,5),
       fn = MLE.beta,
       data=data$`Death Rate 2022`,
-      method = "Brent",
-      lower = 0,
-      upper = 1,
       neg = T)
+
+ggplot(data = data) +
+  geom_histogram()
 
