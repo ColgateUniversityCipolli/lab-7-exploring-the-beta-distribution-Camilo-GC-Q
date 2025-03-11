@@ -202,25 +202,25 @@ for (i in 1:1000) {
 }
 
 mean.plot = ggplot(result, aes(x = mean)) +
-  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Means")
 
 var.plot = ggplot(result, aes(x = variance)) +
-  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Variances")
 
 skew.plot = ggplot(result, aes(x = skew)) + 
-  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Skewness")
 
 kurt.plot = ggplot(result, aes(x = kurt)) +
-  geom_histogram(aes(y = ..density..), binds = 30, fill = "blue") +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Kurtosis")
