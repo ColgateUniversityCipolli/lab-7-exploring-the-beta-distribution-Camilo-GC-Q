@@ -233,20 +233,51 @@ kurt.plot = ggplot(result, aes(x = kurt)) +
 
 data = read_csv("DeathData/Data.csv")
 view(data)
-data = data[-c(1:2), ]
 data = data |>
-  rename(`Country Name` = "Data Source", `DeathRate 2022` = "...3")
-
-
-data.clean = data |> 
   select("Country Name", "2022") |>
-  rename(Country = "Country Name", Deaths.per.1000 = "2022") |>
-  filter(!is.na(Deaths.per.100))
+  mutate(`2022` = `2022` / 1000) |>
+  rename(`Death Rate 2022` = "2022") |>
+  filter(!is.na(`Death Rate 2022`))
 
-data.clean = data.clean |>
-  mutate(Death.rate = Deaths.per.100 / 1000)
+view(data)
 
-head(data.clean)
+# Task 7
 
+library(nleqslv)
 
+###################
+# MOM
+###################
+MOM.beta = function(data, alpha, beta){
+  alpha = part[1]
+  beta = par[2]
+  EX1 = alpha / (alpha + beta)
+  m1 = mean(data)
+  EX2 = ((alpha + 1) * alpha) / ((alpha + beta + 1) * (alpha + beta))
+  m2 = mean(data^2)
+  
+  return(c(EX1 - m1, EX2 - m2)) # Goal: find lambda so this is 0
+}
+
+nleqslv(x = 20, # guess
+        fn = MOM.pois,
+        data=data$`Death Rate 2022`)
+
+###################
+# MLE
+###################
+llpois <- function(data, par, neg=FALSE){
+  lambda <- par[1]
+  loglik <- sum(log(dpois(x=data, lambda = lambda)))
+  
+  return(ifelse(neg, -loglik, loglik))
+}
+
+optim(par = 2,
+      fn = llpois,
+      data=dat.ms$Relapsein2y,
+      method = "Brent",
+      lower = 0,
+      upper = 10,
+      neg = T)
 
