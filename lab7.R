@@ -248,7 +248,7 @@ library(nleqslv)
 ###################
 # MOM
 ###################
-MOM.beta = function(data, par){
+MOM.beta = function(par, data){
   alpha = par[1]
   beta = par[2]
   EX1 = alpha / (alpha + beta)
@@ -266,7 +266,7 @@ nleqslv(x = c(2,3), # guess
 ###################
 # MLE
 ###################
-MLE.beta = function(data, par, neg=TRUE){
+MLE.beta = function(par, data, neg=TRUE){
   alpha = par[1]
   beta = par[2]
   loglik = sum(dbeta(x=data, shape1  = alpha, shape2 = beta, log = TRUE))
@@ -290,7 +290,64 @@ n = 266
 alpha = 8
 beta = 950
 
+mom.alpha = numeric(simus)
+mom.beta = numeric(simus)
+mle.alpha = numeric(simus)
+mle.beta = numeric(simus)
+
 for (i in 1:simus){
   set.seed(7272 + i)
   sample = rbeta(n, alpha, beta)
+  
+  mom = nleqslv(c(2,5), MOM.beta, data = sample)
+  mle = optim(c(2,5), MLE.beta, data = sample)
+  
+  mom.alpha[i] = mom$x[1]
+  mom.beta[i] = mom$x[2]
+  mle.alpha[i] = mle$par[1]
+  mle.beta[i] = mle$par[2]
+  
 }
+
+estimates = data.frame(mom.alpha, mom.beta, mle.alpha, mle.beta)
+summary(estimates)
+view(estimates)
+
+p1 = ggplot(estimates, aes(x = mom.alpha)) +
+  geom_density(fill = "red") +
+  ggtitle("MOM Alpha") +
+  theme_minimal()
+
+p2 = ggplot(estimates, aes(x = mom.beta)) +
+  geom_density(fill = "blue") +
+  ggtitle("MOM Beta") +
+  theme_minimal()
+
+p3 = ggplot(estimates, aes(x = mle.alpha)) +
+  geom_density(fill = "green") +
+  ggtitle("MLE Alpha") +
+  theme_minimal()
+
+p4 = ggplot(estimates, aes(x = mle.beta)) +
+  geom_density(fill = "purple") +
+  ggtitle("MLE Beta") +
+  theme_minimal()
+
+(p1 | p2) / (p3 | p4)
+
+metrics = function(estimate, true){
+  bias  = mean(estimate) - true
+  precision = 1 - var(estimate)
+  mse = var(estimate) + bias^2
+  c(Bias = bias, Precision = precision, MSE = mse)
+}
+
+sum = rbind(
+  metrics(mom.alpha, alpha),
+  metrics(mom.beta, beta),
+  metrics(mle.alpha, alpha),
+  metrics(mle.beta, beta)
+) |> as.data.frame()
+
+view(sum)
+
