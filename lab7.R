@@ -203,25 +203,25 @@ for (i in 1:1000) {
 }
 
 mean.plot = ggplot(result, aes(x = mean)) +
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Means")
 
 var.plot = ggplot(result, aes(x = variance)) +
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Variances")
 
 skew.plot = ggplot(result, aes(x = skew)) + 
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Skewness")
 
 kurt.plot = ggplot(result, aes(x = kurt)) +
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue") +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue") +
   geom_density(color = "red") +
   theme_bw() +
   ggtitle("Histogram of Sample Kurtosis")
@@ -232,7 +232,7 @@ kurt.plot = ggplot(result, aes(x = kurt)) +
 # Task 6
 # help(read_csv)
 data = read_csv("DeathData/Data.csv")
-view(data)
+# view(data)
 data = data |>
   select("Country Name", "2022") |>
   mutate(`2022` = `2022` / 1000) |>
@@ -259,28 +259,53 @@ MOM.beta = function(par, data){
   return(c(EX1 - m1, EX2 - m2)) # Goal: find lambda so this is 0
 }
 
-nleqslv(x = c(2,3), # guess
+mom =nleqslv(x = c(2,5), # guess
         fn = MOM.beta,
         data=data$`Death Rate 2022`)
+
+
+
+alpha.hat.mom = mom$x[1]
+beta.hat.mom = mom$x[2]
 
 ###################
 # MLE
 ###################
-MLE.beta = function(par, data, neg=TRUE){
+MLE.beta = function(par, data, neg=FALSE){
   alpha = par[1]
   beta = par[2]
-  loglik = sum(dbeta(x=data, shape1  = alpha, shape2 = beta, log = TRUE))
+  loglik = sum(log(dbeta(x=data, shape1  = alpha, shape2 = beta)))
   
   return(ifelse(neg, -loglik, loglik))
 }
 # help(optim)
-optim(par = c(2,5),
+mle = optim(par = c(2,5),
       fn = MLE.beta,
       data=data$`Death Rate 2022`,
       neg = TRUE)
 
-ggplot(data = data) +
-  geom_histogram()
+alpha.hat.mle = mle$par[1]
+beta.hat.mle = mle$par[2]
+# help(dbeta)
+ggdat.beta = tibble(x = seq(0, 0.025, length.out = 1000)) |>
+  mutate(mom.pdf = dbeta(x, shape1 = alpha.hat.mom, shape2 = beta.hat.mom),
+         mle.pdf = dbeta(x, shape1 = alpha.hat.mle, shape2 = beta.hat.mle))
+
+ggplot() +
+  geom_histogram(data = data,
+                 aes(x = `Death Rate 2022`, y = after_stat(density)),
+                 breaks = seq(0, 0.025, 0.003)) +
+  geom_line(data = ggdat.beta, 
+            aes(x = x, y = mom.pdf, color = "MOM"))+
+  geom_line(data = ggdat.beta,
+            aes(x = x, y = mle.pdf, color = "MLE"))+
+  geom_hline() +
+  theme_bw() +
+  xlab("Data") +
+  ylab("Density") +
+  labs(color = "")
+
+
 
 
 # Task 8
@@ -299,8 +324,8 @@ for (i in 1:simus){
   set.seed(7272 + i)
   sample = rbeta(n, alpha, beta)
   
-  mom = nleqslv(c(2,5), MOM.beta, data = sample)
-  mle = optim(c(2,5), MLE.beta, data = sample)
+  mom = nleqslv(x = c(2,5), fn = MOM.beta, data = sample)
+  mle = optim(par = c(2,5), fn = MLE.beta, data = sample, neg=T)
   
   mom.alpha[i] = mom$x[1]
   mom.beta[i] = mom$x[2]
@@ -337,9 +362,9 @@ p4 = ggplot(estimates, aes(x = mle.beta)) +
 
 metrics = function(estimate, true){
   bias  = mean(estimate) - true
-  precision = 1 - var(estimate)
+  precision = 1 / var(estimate)
   mse = var(estimate) + bias^2
-  c(Bias = bias, Precision = precision, MSE = mse)
+  return(c(Bias = bias, Precision = precision, MSE = mse))
 }
 
 sum = rbind(
@@ -348,6 +373,8 @@ sum = rbind(
   metrics(mle.alpha, alpha),
   metrics(mle.beta, beta)
 ) |> as.data.frame()
-
 view(sum)
+table(sum)
+xtable(sum)
+
 
