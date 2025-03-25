@@ -230,11 +230,11 @@ kurt.plot = ggplot(result, aes(x = kurt)) +
   
 
 # Task 6
-
+# help(read_csv)
 data = read_csv("DeathData/Data.csv")
 view(data)
 data = data |>
-  select(`Country Name`, "2022") |>
+  select("Country Name", "2022") |>
   mutate(`2022` = `2022` / 1000) |>
   rename(`Death Rate 2022` = "2022") |>
   filter(!is.na(`Death Rate 2022`))
@@ -269,7 +269,7 @@ nleqslv(x = c(2,3), # guess
 MLE.beta = function(data, par, neg=TRUE){
   alpha = par[1]
   beta = par[2]
-  loglik = sum(dbeta(x=data, shape1 = alpha, shape2 = beta, log = TRUE))
+  loglik = sum(dbeta(x=data, shape1  = alpha, shape2 = beta, log = TRUE))
   
   return(ifelse(neg, -loglik, loglik))
 }
@@ -282,3 +282,15 @@ optim(par = c(2,5),
 ggplot(data = data) +
   geom_histogram()
 
+
+# Task 8
+
+simus = 1000
+n = 266
+alpha = 8
+beta = 950
+
+for (i in 1:simus){
+  set.seed(7272 + i)
+  sample = rbeta(n, alpha, beta)
+}
