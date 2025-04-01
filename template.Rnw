@@ -39,32 +39,26 @@
 
 \begin{multicols}{2}
 \begin{abstract}
-This lab explored the statistical properties and applications of the Beta distribution using R. Derivations and simulations were conducted to describe the shape, behavior, and use cases of the distribution. Using \texttt{tidyverse} \citep{tidyverse} and \texttt{cumstats} \citep{cumstat}, key properties such as mean, variance, skewness, and kurtosis were derived and validated numerically. Parameter estimates were generated using the Method of Moments and Maximum Likelihood Estimation. These methods were evaluated through simulations and applied to global death rate data from the World Bank (2022) to assess the estimator performance.
+This lab explored the statistical properties and applications of the Beta distribution using \texttt{R}. Derivations and simulations were conducted to describe the shape, behavior, and use cases of the distribution. Using \texttt{tidyverse} \citep{tidyverse} and \texttt{cumstats} \citep{cumstat}, key properties such as mean, variance, skewness, and kurtosis were derived and compared to sdample-based summaries. Parameter estimates were generated using the Method of Moments and Maximum Likelihood Estimation. These estimation methods were evaluated through simulations and applied to global death rate data from the World Bank (2022).
 \end{abstract}
 
 \noindent \textbf{Keywords:} Beta distribution; Parameter estimation; Simulation; Method of Moments; Maximum Likelihood Estimation
 
 \section{Introduction}
 
-\indent The Beta distribution is a powerful tool for modeling continuous variables that are bounded between 0 and 1. This makes it particularly useful in applications such as proportions, probabilities, and rates. The distribution is defined by two shape parameters $\alpha$ and $\beta$, which control the shape of the density function. By varying these parameters, the Beta distribution can take many forms\textemdash left-skewed, right-skewed, symetric, or U-shaped.
+\indent The Beta distribution is a flexible model for continuous variables bounded between 0 and 1, often used for proportions, probabilities, and rates. It is defined by two shape parameters $\alpha$ and $\beta$, which determine the distributions form. Depending on these parameters, the distribution can appear left-skewed, right-skewed, symetric, or U-shaped.
 
-Building on this, this lab investigates the Beta distribtuion by deriving its key statistics using formulas for the mean, variance, skewness, and kurtosis. These properties are computed directly and explored across different parameterizations to understand how shape parameters influence distribution behavior. The lab also examines how sample-based summaries behave in relation to the population characteristics, and it compares the Method of Moments and Maximum Likelihood Estimation using both simulated and real-world data. The goal is to develop a comprehensive understanding of the Beta distribution's features.
-
-% Provide an overarching summary of what you're talking about. In this section, you introduce the idea to the reader, and your goal is to pull them in. What's the mystery you aim to solve?
-% 
-% You want to provide enough background to understand the context of the work. Specifically, what is the question you are addressing? If it applies, describe what information currently exists about this problem, including citations, and explain how the question you're answering complements this work.
-% 
-% Provide a roadmap of the structure of the paper. 
+Building on this, this lab investigates the Beta distribution by deriving its key statistics using closed-form expressions for the mean, variance, skewness, and excess kurtosis. These statistics are explored under different parameter values to understand how $\alpha$ and $\beta$ influence distribution behavior. The lab also examines how sample-based summaries compare to population characteristics and evaluates the Method of Moments and Maximum Likelihood Estimation through simulations and real-world data.
 
 \section{Density Functions and Parameters}
 
-The probability density function (PDF) of the Beta distributions is 
+The probability density function (PDF) of the Beta distributions is:
 \begin{equation*}
 f(x|\alpha, \beta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} \quad \text{for } x \in [0, 1],
 \end{equation*}
 where $\alpha, \beta > 0$ and $\Gamma(\cdot)$ is the gamma function.
 
-The shape of the distribution is entirely governed by $\alpha$ and $\beta$. Four common forms include: 
+The shape of the distribution is fully determined by $\alpha$ and $\beta$. The following examples illustrate its flexibility: 
 \begin{itemize}
 \item Beta(2, 5): Right-skewed
 \item Beta(5, 5): Symmetric
@@ -73,32 +67,25 @@ The shape of the distribution is entirely governed by $\alpha$ and $\beta$. Four
 \end{itemize}
 
 
-% Describe the data you are working with, if applicable. Describe the specific process you will follow to answer the question at hand. This does not mean you should write something like this.
-% \begin{quote}
-% \textit{I did this and then I did that and then I did this other thing and then..., and then..., and then...}
-% \end{quote}
-% Instead, it should provide a clear and concise narrative that flows from the problem specification in the Introduction to how you will approach answering it. This is where I would expect to see some citations for \texttt{R} packages you will use to conduct the statistical analysis reported in the Results section.
-
-
 \section{Properties}
 
-Several population-level characteristics of the Beta distribution can be derived from its PDF:
+Several population-level characteristics of the Beta distribution are derived from its PDF:
 \begin{align*}
 \text{Mean: } & \mathbb{E}(X) = \frac{\alpha}{\alpha + \beta} \\
 \text{Variance: } & \text{Var}(X) = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} \\
 \text{Skewness: } & \frac{2(\beta - \alpha) \sqrt{\alpha + \beta + 1}}{(\alpha + \beta + 2) \sqrt{\alpha \beta}} \\
 \text{Excess Kurtosis: } & \frac{6[(\alpha - \beta)^2 (\alpha + \beta + 1) - \alpha \beta (\alpha + \beta + 2)]}{\alpha \beta (\alpha + \beta + 2)(\alpha + \beta + 3)}
 \end{align*}
-These expressions were confirmed by comparing theoretical values to those computed using \texttt{R} functions written for each formula. Additional tools such as the \texttt{cumstats} and \texttt{tidyverse} packages were used to summarize the behavior of these properties in samples.
+These theoretical values were compared to those computed using \texttt{R} functions for each formula. The \texttt{cumstats} and \texttt{tidyverse} packages were used to summarize the behavior of these statistics from samples.
 
 \section{Estimators}
 
-To estimate $\alpha$ and $\beta$ from the data, two approaches were implemented: 
+To estimate $\alpha$ and $\beta$ from the data, two approaches were used: 
 \begin{itemize}
-\item \textbf{Method of Moments (MOM):} Matches sample mean and variance to theoretical expressions to solve for parameters.
-\item \textbf{Maximum Likelihood Estimation (MLE):} Uses numerical optimization to maximize the log-likelihood function derived from the PDF.
+\item \textbf{Method of Moments (MOM):} Matches sample moments to theoretical moments
+\item \textbf{Maximum Likelihood Estimation (MLE):} Optimizes the log-likelihood based on the PDF.
 \end{itemize}
-Simulations of size $n = 1000$ showed that while MOM is simpler and easier to compute, MLE offers better precision, reduced bias, and lower error. The accuracy of the estimators was assessed using three key metrics:
+Simulations with $n = 1000$ showed that MLE offers improved performance over MOM, including higher precision and lower error. The quality of the estimators was assessed using:
 \begin{align*}
 \text{Bias: } & \mathbb{E}(\hat{\theta}) - \theta \\
 \text{Precision: } & \frac{1}{\text{Var}(\hat{\theta})} \\
@@ -107,9 +94,9 @@ Simulations of size $n = 1000$ showed that while MOM is simpler and easier to co
 
 \section{Example: Death Rates Data}
 
-\indent I applied these estimation procedures to real-world data from the World Bank, which records country-level death rates per $1000$ people. The data were used to fit the Beta distributions using both MOM and MLE. MLE yielded slightyly lower MSE and higher precision for both parameters, especially for $\alpha$, though both estimators showed notable bias and error for $\beta$.
+\indent Estimation procedures were applied to country-level death rates per $1000$ people (World Bank, 2022). Both MOM and MLE were used to fit Beta distributions.
 
-To assess estimator performance under known conditions, I simulated $1000$ samples of size $n = 266$ from a Beta($8$, $950$) distribution. Results showed:
+To further examine estimator performance, $1000$ samples of size $n = 266$ were simulated from a Beta($8$, $950$) distribution. Results:
 \begin{tabular}{|c|c|c|c|}
 \hline
 Estimator & Bias & Precision & MSE \\
@@ -120,7 +107,7 @@ MLE $\alpha$ & 0.0720 & 2.1273 & 0.4753 \\
 MLE $\beta$ & 9.1136 & 0.0001418 & 7133.5690 \\
 \hline
 \end{tabular}\\
-These results support the conclusion that MLE generally produces lower error, greater precision, and lower bias than MOM, particularly when estimating $\alpha$. However, both estimators exhibited substantial bias for $\beta$ which may indicate some trouble estimating these distributions.
+These results support the conclusion that MLE generally produces lower error and greater precision than MOM, particularly when estimating $\alpha$. However, both estimators struggled with bias when estimating $\beta$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography

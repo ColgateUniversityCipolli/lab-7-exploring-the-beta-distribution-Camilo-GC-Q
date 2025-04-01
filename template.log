@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.25)  31 MAR 2025 21:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.25)  1 APR 2025 12:17
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -449,7 +449,22 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 90.
 (c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+Underfull \hbox (badness 10000) in paragraph at lines 150--162
+[]\OT1/cmr/m/n/10 To fur-ther ex-am-ine es-ti-ma-tor per-for-mance,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 150--162
+\OT1/cmr/m/n/10 1000$ sam-ples of size $\OML/cmm/m/it/10 n \OT1/cmr/m/n/10 = 266$ were sim-u-
+ []
+
+
+Underfull \hbox (badness 7613) in paragraph at lines 150--162
+\OT1/cmr/m/n/10 lated from a Beta($8$, $950$) dis-tri-bu-tion. Re-sults:
+ []
+
+[1
 
 {c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./template.bbl)
 
@@ -457,12 +472,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <beta_distributions.pdf, id=66, 1195.46625pt x 752.8125pt>
 File: beta_distributions.pdf Graphic file (type pdf)
 <use beta_distributions.pdf>
-Package pdftex.def Info: beta_distributions.pdf  used on input line 197.
+Package pdftex.def Info: beta_distributions.pdf  used on input line 184.
 (pdftex.def)             Requested size: 487.8192pt x 307.19627pt.
 <sample_beta_distributions.pdf, id=67, 1195.46625pt x 752.8125pt>
 File: sample_beta_distributions.pdf Graphic file (type pdf)
 <use sample_beta_distributions.pdf>
-Package pdftex.def Info: sample_beta_distributions.pdf  used on input line 203.
+Package pdftex.def Info: sample_beta_distributions.pdf  used on input line 190.
 (pdftex.def)             Requested size: 487.8192pt x 307.19627pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -470,7 +485,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <cum_stats_plots.pdf, id=68, 1195.46625pt x 752.8125pt>
 File: cum_stats_plots.pdf Graphic file (type pdf)
 <use cum_stats_plots.pdf>
-Package pdftex.def Info: cum_stats_plots.pdf  used on input line 209.
+Package pdftex.def Info: cum_stats_plots.pdf  used on input line 196.
 (pdftex.def)             Requested size: 487.8192pt x 307.19627pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -478,7 +493,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <sample_stats_histograms.pdf, id=69, 1195.46625pt x 752.8125pt>
 File: sample_stats_histograms.pdf Graphic file (type pdf)
 <use sample_stats_histograms.pdf>
-Package pdftex.def Info: sample_stats_histograms.pdf  used on input line 215.
+Package pdftex.def Info: sample_stats_histograms.pdf  used on input line 202.
 (pdftex.def)             Requested size: 487.8192pt x 307.19627pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -486,7 +501,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <MOM_MLE_histogram.pdf, id=70, 875.27pt x 752.8125pt>
 File: MOM_MLE_histogram.pdf Graphic file (type pdf)
 <use MOM_MLE_histogram.pdf>
-Package pdftex.def Info: MOM_MLE_histogram.pdf  used on input line 221.
+Package pdftex.def Info: MOM_MLE_histogram.pdf  used on input line 208.
 (pdftex.def)             Requested size: 379.41585pt x 326.33357pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -494,7 +509,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <alpha_beta_densities.pdf, id=71, 875.27pt x 752.8125pt>
 File: alpha_beta_densities.pdf Graphic file (type pdf)
 <use alpha_beta_densities.pdf>
-Package pdftex.def Info: alpha_beta_densities.pdf  used on input line 227.
+Package pdftex.def Info: alpha_beta_densities.pdf  used on input line 214.
 (pdftex.def)             Requested size: 487.8192pt x 419.57338pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -520,13 +535,13 @@ Package rerunfilecheck Info: File `template.out' has not changed.
 Here is how much of TeX's memory you used:
  12301 strings out of 475172
  197862 string characters out of 5764330
- 626815 words of memory out of 5000000
+ 629815 words of memory out of 5000000
  35123 multiletter control sequences out of 15000+600000
  568188 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,79p,796b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,794b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb><c:/Users/cagra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on template.pdf (6 pages, 349478 bytes).
+Output written on template.pdf (6 pages, 348549 bytes).
 PDF statistics:
  210 PDF objects out of 1000 (max. 8388607)
  151 compressed objects within 2 object streams
