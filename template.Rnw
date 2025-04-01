@@ -24,13 +24,13 @@
 \begin{document}
 
 \vspace{-1in}
-\title{Lab XX -- MATH 240 -- Computational Statistics}
+\title{Lab 7 and 8 -- MATH 240 -- Computational Statistics}
 
 \author{
-  First Author \\
-  Affiliation  \\
-  Department  \\
-  {\tt email@domain}
+  Camilo Granada Cossio \\
+  Colgate University  \\
+  Mathematics Department  \\
+  {\tt cgranadacossio@colgate.edu}
 }
 
 \date{}
@@ -98,29 +98,36 @@ To estimate $\alpha$ and $\beta$ from the data, two approaches were implemented:
 \item \textbf{Method of Moments (MOM):} Matches sample mean and variance to theoretical expressions to solve for parameters.
 \item \textbf{Maximum Likelihood Estimation (MLE):} Uses numerical optimization to maximize the log-likelihood function derived from the PDF.
 \end{itemize}
-Simulations of size $n = 1000$ showed that while MOM is simpler
+Simulations of size $n = 1000$ showed that while MOM is simpler and easier to compute, MLE offers better precision, reduced bias, and lower error. The accuracy of the estimators was assessed using three key metrics:
+\begin{align*}
+\text{Bias: } & \mathbb{E}(\hat{\theta}) - \theta \\
+\text{Precision: } & \frac{1}{\text{Var}(\hat{\theta})} \\
+\text{MSE: } & \text{Var}(\hat{\theta}) + \text{Bias}^2
+\end{align*}
 
+\section{Example: Death Rates Data}
 
+\indent I applied these estimation procedures to real-world data from the World Bank, which records country-level death rates per $1000$ people. The data were used to fit the Beta distributions using both MOM and MLE. MLE yielded slightyly lower MSE and higher precision for both parameters, especially for $\alpha$, though both estimators showed notable bias and error for $\beta$.
 
-\section{Results}
-Tie together the Introduction -- where you introduce the problem at hand -- and the methods --  what you propose to do to answer the question. Present your data, the results of your analyses, and how each reported aspect contributes to answering the question. This section should include table(s), statistic(s), and graphical displays. Make sure to put the results in a sensible order and that each result contributes a logical and developed solution. It should not just be a list. Avoid being repetitive. 
-
-\subsection{Results Subsection}
-Subsections can be helpful for the Results section, too. This can be particularly helpful if you have different questions to answer. 
-
-
-\section{Discussion}
- You should objectively evaluate the evidence you found in the data. Do not embellish or wish-terpet (my made-up phase for making an interpretation you, or the researcher, wants to be true without the data \emph{actually} supporting it). Connect your findings to the existing information you provided in the Introduction.
-
-Finally, provide some concluding remarks that tie together the entire paper. Think of the last part of the results as abstract-like. Tell the reader what they just consumed -- what's the takeaway message?
+To assess estimator performance under known conditions, I simulated $1000$ samples of size $n = 266$ from a Beta($8$, $950$) distribution. Results showed:
+\begin{tabular}{|c|c|c|c|}
+\hline
+Estimator & Bias & Precision & MSE \\
+\hline
+MOM $\alpha$ & 0.0827 & 1.8281 & 0.5539 \\
+MOM $\beta$ & 10.4071 & 0.0001222 & 8294.1232 \\
+MLE $\alpha$ & 0.0720 & 2.1273 & 0.4753 \\
+MLE $\beta$ & 9.1136 & 0.0001418 & 7133.5690 \\
+\hline
+\end{tabular}\\
+These results support the conclusion that MLE generally produces lower error, greater precision, and lower bias than MOM, particularly when estimating $\alpha$. However, both estimators exhibited substantial bias for $\beta$ which may indicate some trouble estimating these distributions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{2em}
 
-\noindent\textbf{Bibliography:} Note that when you add citations to your bib.bib file \emph{and}
-you cite them in your document, the bibliography section will automatically populate here.
+\citep{patch}
 
 \begin{tiny}
 \bibliography{bib}
@@ -134,6 +141,40 @@ you cite them in your document, the bibliography section will automatically popu
 \onecolumn
 \section{Appendix}
 
-If you have anything extra, you can add it here in the appendix. This can include images or tables that don't work well in the two-page setup, code snippets you might want to share, etc.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{beta_distributions.pdf}
+\caption{Probability Density Functions for Different Beta Distributions}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{sample_beta_distributions.pdf}
+\caption{Histograms and Estimated Densities from Sample Data Compared to True PDFs}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{cum_stats_plots.pdf}
+\caption{Cumulative Statistics for Beta(2, 5) Sample}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{sample_stats_histograms.pdf}
+\caption{Sampling Distributions from 1000 Simulated Samples}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{MOM_MLE_histogram.pdf}
+\caption{Histogram of Real Death Rate Data with MOM and MLE Fits}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{alpha_beta_densities.pdf}
+\caption{Distributions of Estimated $\alpha$ and $\beta$ Values from MOM and MLE}
+\end{figure}
 
 \end{document}
