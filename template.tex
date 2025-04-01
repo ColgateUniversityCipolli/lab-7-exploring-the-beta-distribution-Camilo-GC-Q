@@ -90,38 +90,67 @@
 
 \begin{multicols}{2}
 \begin{abstract}
-This lab explored the statistical properties and applications of the Beta distribution using R. Derivations and simulations were conducted to describe the shape, behavior, and use cases of the distribution. Using \texttt{tidyverse} \citep{tidyverse} and \texttt{cumstats} \citep{cumst}, key properties such as mean, variance, skewness, and kurtosis were derived and validated numerically. Parameter estimates were generated using the Method of Moments and Maximum Likelihood Estimation. These methods were evaluated through simulations and applied to global death rate data from the World Bank (2022) to assess the estimator performance.
+This lab explored the statistical properties and applications of the Beta distribution using R. Derivations and simulations were conducted to describe the shape, behavior, and use cases of the distribution. Using \texttt{tidyverse} \citep{tidyverse} and \texttt{cumstats} \citep{cumstat}, key properties such as mean, variance, skewness, and kurtosis were derived and validated numerically. Parameter estimates were generated using the Method of Moments and Maximum Likelihood Estimation. These methods were evaluated through simulations and applied to global death rate data from the World Bank (2022) to assess the estimator performance.
 \end{abstract}
 
 \noindent \textbf{Keywords:} Beta distribution; Parameter estimation; Simulation; Method of Moments; Maximum Likelihood Estimation
 
 \section{Introduction}
 
-The Beta distribution is a powerful tool for modeling continuous variables that are bounded between 0 and 1. This makes it particularly useful in applications such as proportions, probabilities, and rates. The distribution is defined by two shape parameters $\alpha$ and $\beta$, which control the shape of the density function. By varying these parameters, the Beta distribution can take many forms \em left-skewed, right-skewed, symetric, or U-shaped.
+\indent The Beta distribution is a powerful tool for modeling continuous variables that are bounded between 0 and 1. This makes it particularly useful in applications such as proportions, probabilities, and rates. The distribution is defined by two shape parameters $\alpha$ and $\beta$, which control the shape of the density function. By varying these parameters, the Beta distribution can take many forms\textemdash left-skewed, right-skewed, symetric, or U-shaped.
 
-Provide an overarching summary of what you're talking about. In this section, you introduce the idea to the reader, and your goal is to pull them in. What's the mystery you aim to solve?
+Building on this, this lab investigates the Beta distribtuion by deriving its key statistics using formulas for the mean, variance, skewness, and kurtosis. These properties are computed directly and explored across different parameterizations to understand how shape parameters influence distribution behavior. The lab also examines how sample-based summaries behave in relation to the population characteristics, and it compares the Method of Moments and Maximum Likelihood Estimation using both simulated and real-world data. The goal is to develop a comprehensive understanding of the Beta distribution's features.
 
-You want to provide enough background to understand the context of the work. Specifically, what is the question you are addressing? If it applies, describe what information currently exists about this problem, including citations, and explain how the question you're answering complements this work.
+% Provide an overarching summary of what you're talking about. In this section, you introduce the idea to the reader, and your goal is to pull them in. What's the mystery you aim to solve?
+% 
+% You want to provide enough background to understand the context of the work. Specifically, what is the question you are addressing? If it applies, describe what information currently exists about this problem, including citations, and explain how the question you're answering complements this work.
+% 
+% Provide a roadmap of the structure of the paper. 
 
-Provide a roadmap of the structure of the paper. 
+\section{Density Functions and Parameters}
 
-\subsection{Intro Subsection}
-You might need/want to discuss the topics in subsections. Or, you may have multiple questions.
+The probability density function (PDF) of the Beta distributions is 
+\begin{equation*}
+f(x|\alpha, \beta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} x^{\alpha - 1}(1 - x)^{\beta - 1} \quad \text{for } x \in [0, 1],
+\end{equation*}
+where $\alpha, \beta > 0$ and $\Gamma(\cdot)$ is the gamma function.
 
-% \begin{Figure}
-% \includegraphics{screenshot}
-% \end{Figure}
-
-\section{Methods}
-Describe the data you are working with, if applicable. Describe the specific process you will follow to answer the question at hand. This does not mean you should write something like this.
-\begin{quote}
-\textit{I did this and then I did that and then I did this other thing and then..., and then..., and then...}
-\end{quote}
-Instead, it should provide a clear and concise narrative that flows from the problem specification in the Introduction to how you will approach answering it. This is where I would expect to see some citations for \texttt{R} packages you will use to conduct the statistical analysis reported in the Results section.
+The shape of the distribution is entirely governed by $\alpha$ and $\beta$. Four common forms include: 
+\begin{itemize}
+\item Beta(2, 5): Right-skewed
+\item Beta(5, 5): Symmetric
+\item Beta(5, 2): Left-skewed
+\item Beta(0.5, 0.5): U-shaped
+\end{itemize}
 
 
-\subsection{Methods Subsection}
-Much like the Introduction, subsections can be helpful for the Methods section. For example, you might describe data collection and the statistical analyses of the collected data in different subsections. Or, you may have different questions that require distinct methods. 
+% Describe the data you are working with, if applicable. Describe the specific process you will follow to answer the question at hand. This does not mean you should write something like this.
+% \begin{quote}
+% \textit{I did this and then I did that and then I did this other thing and then..., and then..., and then...}
+% \end{quote}
+% Instead, it should provide a clear and concise narrative that flows from the problem specification in the Introduction to how you will approach answering it. This is where I would expect to see some citations for \texttt{R} packages you will use to conduct the statistical analysis reported in the Results section.
+
+
+\section{Properties}
+
+Several population-level characteristics of the Beta distribution can be derived from its PDF:
+\begin{align*}
+\text{Mean: } & \mathbb{E}(X) = \frac{\alpha}{\alpha + \beta} \\
+\text{Variance: } & \text{Var}(X) = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} \\
+\text{Skewness: } & \frac{2(\beta - \alpha) \sqrt{\alpha + \beta + 1}}{(\alpha + \beta + 2) \sqrt{\alpha \beta}} \\
+\text{Excess Kurtosis: } & \frac{6[(\alpha - \beta)^2 (\alpha + \beta + 1) - \alpha \beta (\alpha + \beta + 2)]}{\alpha \beta (\alpha + \beta + 2)(\alpha + \beta + 3)}
+\end{align*}
+These expressions were confirmed by comparing theoretical values to those computed using \texttt{R} functions written for each formula. Additional tools such as the \texttt{cumstats} and \texttt{tidyverse} packages were used to summarize the behavior of these properties in samples.
+
+\section{Estimators}
+
+To estimate $\alpha$ and $\beta$ from the data, two approaches were implemented: 
+\begin{itemize}
+\item \textbf{Method of Moments (MOM):} Matches sample mean and variance to theoretical expressions to solve for parameters.
+\item \textbf{Maximum Likelihood Estimation (MLE):} Uses numerical optimization to maximize the log-likelihood function derived from the PDF.
+\end{itemize}
+
+
 
 \section{Results}
 Tie together the Introduction -- where you introduce the problem at hand -- and the methods --  what you propose to do to answer the question. Present your data, the results of your analyses, and how each reported aspect contributes to answering the question. This section should include table(s), statistic(s), and graphical displays. Make sure to put the results in a sensible order and that each result contributes a logical and developed solution. It should not just be a list. Avoid being repetitive. 

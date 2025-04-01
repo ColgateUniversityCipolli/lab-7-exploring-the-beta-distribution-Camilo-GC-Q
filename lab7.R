@@ -20,13 +20,15 @@ distribution = function(alpha, beta){
 }
 
 
-(beta.2.5 = distribution(2,5))
+beta.2.5 = distribution(2,5)
 
-(beta.5.5 = distribution(5,5))
+beta.5.5 = distribution(5,5)
 
-(beta.5.2 = distribution(5,2))
+beta.5.2 = distribution(5,2)
 
-(beta.0.5 = distribution(0.5,0.5))
+beta.0.5 = distribution(0.5,0.5)
+
+(beta.2.5 | beta.5.5) / (beta.5.2 | beta.0.5)
 
 
 charac = function(alpha, beta){
@@ -368,12 +370,13 @@ metrics = function(estimate, true){
 }
 
 sum = rbind(
-  MOMmetrics(mom.alpha, alpha),
+  metrics(mom.alpha, alpha),
   metrics(mom.beta, beta),
   metrics(mle.alpha, alpha),
   metrics(mle.beta, beta)
 ) |> as.data.frame()
-view(sum)
+rownames(sum) <- c("MOM_Alpha", "MOM_Beta", "MLE_Alpha", "MLE_Beta")
 
+view(sum)
 
 
