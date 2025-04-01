@@ -368,13 +368,12 @@ metrics = function(estimate, true){
 }
 
 sum = rbind(
-  metrics(mom.alpha, alpha),
+  MOMmetrics(mom.alpha, alpha),
   metrics(mom.beta, beta),
   metrics(mle.alpha, alpha),
   metrics(mle.beta, beta)
 ) |> as.data.frame()
 view(sum)
-table(sum)
-xtable(sum)
+
 
 

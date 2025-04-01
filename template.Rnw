@@ -39,12 +39,15 @@
 
 \begin{multicols}{2}
 \begin{abstract}
-This document provides a basic template for the 2-page labs we will complete each week. Here, briefly summarize what you did and why it might be helpful. Provide all the top-line conclusions, but avoid providing \emph{all} the details. Results should be limited to ``we show X, Y, and Z."
+This lab explored the statistical properties and applications of the Beta distribution using R. Derivations and simulations were conducted to describe the shape, behavior, and use cases of the distribution. Using \texttt{tidyverse} \citep{tidyverse} and \texttt{cumstats} \citep{cumst}, key properties such as mean, variance, skewness, and kurtosis were derived and validated numerically. Parameter estimates were generated using the Method of Moments and Maximum Likelihood Estimation. These methods were evaluated through simulations and applied to global death rate data from the World Bank (2022) to assess the estimator performance.
 \end{abstract}
 
-\noindent \textbf{Keywords:} What topics does the lab cover concerning class? List 3-4 key terms here, separated by semicolons.
+\noindent \textbf{Keywords:} Beta distribution; Parameter estimation; Simulation; Method of Moments; Maximum Likelihood Estimation
 
 \section{Introduction}
+
+The Beta distribution is a powerful tool for modeling continuous variables that are bounded between 0 and 1. This makes it particularly useful in applications such as proportions, probabilities, and rates. The distribution is defined by two shape parameters $\alpha$ and $\beta$, which control the shape of the density function. By varying these parameters, the Beta distribution can take many forms \em left-skewed, right-skewed, symetric, or U-shaped.
+
 Provide an overarching summary of what you're talking about. In this section, you introduce the idea to the reader, and your goal is to pull them in. What's the mystery you aim to solve?
 
 You want to provide enough background to understand the context of the work. Specifically, what is the question you are addressing? If it applies, describe what information currently exists about this problem, including citations, and explain how the question you're answering complements this work.
@@ -54,9 +57,9 @@ Provide a roadmap of the structure of the paper.
 \subsection{Intro Subsection}
 You might need/want to discuss the topics in subsections. Or, you may have multiple questions.
 
-\begin{Figure}
-\includegraphics{screenshot}
-\end{Figure}
+% \begin{Figure}
+% \includegraphics{screenshot}
+% \end{Figure}
 
 \section{Methods}
 Describe the data you are working with, if applicable. Describe the specific process you will follow to answer the question at hand. This does not mean you should write something like this.
